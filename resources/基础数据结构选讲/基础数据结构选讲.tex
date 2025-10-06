@@ -637,4 +637,80 @@ for (int i = 0; i <= n; i++) {
 std::cout << ans << "\n";
 \end{minted}
 
+\chapter{链表}
+
+\section{链表的性质}
+
+数组是一种支持随机访问，但不支持在任意位置插入或删除元素的数据结构。与之对应，链表支持在任意位置插入或删除，但只能按顺序依次访问其中的元素。
+
+\textcolor{red}{链表} 的本质是相邻元素相连接。
+
+\section{链表的实现}
+
+通常使用 C-style 数组模拟实现链表：
+
+\begin{minted}{cpp}
+// e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
+int e[N], l[N], r[N], idx;
+// 初始化
+void init()
+{
+    //0是左端点，1是右端点
+    r[0] = 1, l[1] = 0;
+    idx = 2;
+}
+// 在节点a的右边插入一个数x
+void insert(int a, int x)
+{
+    e[idx] = x;
+    l[idx] = a, r[idx] = r[a];
+    l[r[a]] = idx, r[a] = idx ++ ;
+}
+// 删除节点a
+void remove(int a)
+{
+    l[r[a]] = l[a];
+    r[l[a]] = r[a];
+}
+\end{minted}
+
+\section{例题}
+
+\subsection{例题一 \ 约瑟夫问题}
+
+跟前面的问题相同，你能使用链表实现吗？
+
+\subsection{例题二 \ 链式前向星}
+
+读入 $n$ 个点，$m$ 条边，保存这个图。
+
+\subsubsection{分析}
+
+\textbf{邻接表}是链表的其中一个重要应用，它是树与图结构的一般化存储方式。
+
+具体来说，链式前向星实现的邻接表，是用一个数组存每一个点的出边组成的链表的"表头"。
+
+链式前向星中一般而言使用 $h, e, ne, w$ 四个数组来存图，$h$ 和 $ne$ 数组存的是 "$e$ 数组的下标"，相当于指针。$e$ 数组存储的是每条边的终点，$w$ 数组存储的是每条边的权值，是图的真实数据。
+
+我们使用 $h$ 获取"表头"，$ne$ 获取当前边在出边组成的链表中的后继，进而可以遍历某个点的每一个出边。
+
+\subsubsection{代码}
+
+\begin{minted}{cpp}
+// 对于每个点k，开一个单链表，存储k所有可以走到的点。h[k]存储这个单链表的头结点
+int h[N], e[N], ne[N], idx;
+// 添加一条边a->b
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
+}
+// 初始化
+idx = 0;
+memset(h, -1, sizeof h);
+// 遍历某个节点的所有出边
+for (int i = h[u]; i != -1; i = ne[i]) { }
+\end{minted}
+
+\chapter{并查集 \& Hash 表（未完待续）}
+
 \end{document}
